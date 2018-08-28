@@ -5,6 +5,8 @@ import pandas as pd
 DAT = 'data/carbon_nanotubes.csv'
 CVN = 10
 LAM = 0.1
+
+# np.set_printoptions(suppress = True)
 #あ
 
 def regression(x, y, λ):
@@ -26,6 +28,19 @@ def validation(flds, k, λ):
 		w = regression(X, Y, λ)
 
 		# Validation for folder f
+		eiv = flds[0][f]
+		biv = np.ones([eiv.shape[0], 1])
+		Xiv = np.concatenate([eiv, biv], axis = 1)
+		Yiv = flds[1][f]
+		Oiv = Xiv.dot(w)
+		Err = (Yiv.reshape([Yiv.shape[0], 1]) - Oiv) ** 2
+
+		# Mean and deviation of the square error
+		me, de = np.mean(Err), np.std(Err)
+		print("The accuracy of folder %d:" % f)
+		print("Mean of SE\tDeviation of SE")
+		print("%.10f\t%.10f" % (me, de))
+		print("---")
 
 	return None
 
