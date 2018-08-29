@@ -6,7 +6,7 @@ DAT = 'data/carbon_nanotubes.csv'
 CVN = 10
 LAM = 0.1
 
-# np.set_printoptions(suppress = True)
+np.set_printoptions(suppress = True)
 #あ
 
 def regression(x, y, λ):
@@ -19,6 +19,7 @@ def regression(x, y, λ):
 	return w
 
 def validation(flds, k, λ):
+	re = []
 	for f in range(k):
 		# Regression for folder f
 		e = np.concatenate([flds[0][i] for i in range(k) if i != f])
@@ -41,8 +42,9 @@ def validation(flds, k, λ):
 		print("Mean of SE\tDeviation of SE")
 		print("%.10f\t%.10f" % (me, de))
 		print("---")
+		re.append([me, de])
 
-	return None
+	return np.array(re)
 
 def fold_data(egb, ltg, k):
 	# Shuffle the data
@@ -71,6 +73,14 @@ def main():
 	# Cross Validation
 	folders = fold_data(eingeben, leistung, CVN)
 	results = validation(folders, CVN, LAM)
+
+	# Print Result
+	mfm, mfd = np.mean(results[:,0]), np.mean(results[:,1])
+	print("")
+	print("Results:")
+	print("Mean of the folders' SE\t Mean of the SE's deviation")
+	print("%.10f\t\t %.10f" % (mfm, mfd))
+	print("---")
 
 #あ
 if __name__ == '__main__':
